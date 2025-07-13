@@ -1,0 +1,65 @@
+@use '../../styles/vars' as *;
+
+
+.game {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	flex-grow: 1;
+	height: 100%;
+	margin-top: 1rem;
+}
+
+.header {
+	width: 750px;
+	margin:  0 auto 2rem auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	svg {
+		width: 40px;
+		height: 40px;
+	}
+	
+	h3 {
+		font-size: 24px;
+		font-weight: 400;
+
+		> span {
+			font-weight: 700;
+		}
+	}
+} 
+
+.field {
+	display: flex;
+	flex-direction: column;
+
+	&Wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 2rem;
+		flex-grow: 1;
+	}
+	
+	> .row {
+		display: flex;
+
+		&:last-child > .cell {
+			border-bottom: 0;
+		}
+	
+		> .cell {
+			width: 25px;
+			height: 25px;
+			border-bottom: 1px solid $text-color;
+			border-right: 1px solid $text-color;
+			border-radius: 0;
+		}
+		> .cell:last-child {
+			border-right: 0;
+		}
+	}
+}

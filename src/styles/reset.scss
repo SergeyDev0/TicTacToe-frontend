@@ -1,0 +1,22 @@
+@use "vars.scss" as *;
+
+ul, li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+button, input {
+ 	outline: none;
+	border: 0;
+	background-color: transparent;
+	color: $text-color;
+	border-radius: $border-radius;
+}
+
+button {
+	cursor: pointer;
+	font-size: 16px;
+}
