@@ -4,7 +4,7 @@ import { MoveLeft } from "lucide-react";
 import type { FC } from "react";
 import styles from "./game.module.scss";
 import { getGame, moveGame } from "../../api/games";
-import { type Board, type CellValue, type CurrentMove } from "../../api/types/games";
+import { type Board, type CellValue, type CurrentMove } from "../../api/types/games.d";
 
 const Game: FC = () => {
 	const { id } = useParams();
