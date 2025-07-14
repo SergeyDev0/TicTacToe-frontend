@@ -1,8 +1,8 @@
-type CellValue = "X" | "0" | null;
+type CellValue = "X" | "O" | null;
 type Board = CellValue[][];
 type Status = "Active" | "Completed";
-type CurrentMove =  "0" | "X";
-type Result = "None" | "X" | "0" | "Draw";
+type CurrentMove =  "O" | "X";
+type Result = "None" | "WinX" | "WinO" | "Draw";
 
 export interface Games {
 	id: string;

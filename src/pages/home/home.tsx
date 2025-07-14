@@ -16,8 +16,8 @@ const Home: FC = () => {
 	const navigate = useNavigate();
 
 	const [games, setGames] = React.useState<Games[]>([]);
-	const [chanceReplace, setChanceReplace] = React.useState<number>(0);
-	const [movesForReplace, setMovesForReplace] = React.useState<number>(0);
+	const [chanceReplace, setChanceReplace] = React.useState<number>(1);
+	const [movesForReplace, setMovesForReplace] = React.useState<number>(1);
 	const [lineToWin, setLineToWin] = React.useState<LineSize>(3);
 	const [activeGame, setActiveGame] = React.useState<BoardSize>(3);
 
@@ -41,6 +41,8 @@ const Home: FC = () => {
 				console.log(res);
 				navigate(`/game/${res.id}`)
 			});
+
+		console.log("chance " + chanceReplace, "moves " + movesForReplace, "lines " + lineToWin, "size " + activeGame)
 	}
 	return (
 		<div className={styles.home}>
@@ -73,11 +75,11 @@ const Home: FC = () => {
 						onChange={(event) => {
 							let value = Number(event.target.value);
 							if (value > 100) value = 100;
-							if (value < 0) value = 0;
+							if (value < 1) value = 1;
 							setChanceReplace(value);
 						}}
 						type="text"
-						min={0}
+						min={1}
 						max={100}
 						required
 					/>
@@ -89,18 +91,18 @@ const Home: FC = () => {
 						onChange={(event) => {
 							let value = Number(event.target.value);
 							if (value > 100) value = 100;
-							if (value < 0) value = 0;
+							if (value < 1) value = 1;
 							setMovesForReplace(value);
 						}}
 						type="text"
-						min={0}
+						min={1}
 						max={100}
 						required
 					/>
 				</div>
 			</div>
-			<div className={styles.col}>
-				<h2 className={styles.title}>Длина линии для выигрыша</h2>
+				<div className={styles.col}>
+					<h2 className={styles.title}>Длина линии для выигрыша</h2>
 				<ul 
 					className={styles.sizeBorads}
 					style={{gridTemplateColumns: `repeat(${LINE_SIZES.length}, 1fr)`}}

@@ -32,8 +32,8 @@ const Game: FC = () => {
 		if(id) {
 			moveGame(id, {
 				p: currentPlayer!,
-				x: colId,
-				y: rowId,
+				x: rowId,
+				y: colId,
 			})
 			.then((res) => {
 				console.log(res);
@@ -44,7 +44,7 @@ const Game: FC = () => {
 
 	const fillCell = (cell: CellValue) : string => {
 		if(cell === "X") return "X";
-		if(cell === "0") return "0";
+		if(cell === "O") return "O";
 		return "";
 	}
 
