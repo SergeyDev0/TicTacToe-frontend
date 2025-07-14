@@ -1,18 +1,56 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { MoveLeft } from "lucide-react";
 import type { FC } from "react";
 import styles from "./game.module.scss";
 import { getGame, moveGame } from "../../api/games";
-import { type Board, type CellValue, type CurrentMove } from "../../api/types/games.d";
+import { type Board, type CellValue, type CurrentMove, type Result } from "../../api/types/games.d";
+
+const PopupMessage: FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
+  const [show, setShow] = useState(false);
+  const [animationClass, setAnimationClass] = useState<string>("");
+
+  useEffect(() => {
+    if (message) {
+      setShow(true);
+      setAnimationClass(styles["popup-enter"]);
+      const appearTimer = setTimeout(() => {
+        setAnimationClass(styles["popup-enter-active"]);
+      }, 1000);
+      const hideTimer = setTimeout(() => {
+        setAnimationClass(styles["popup-exit-active"]);
+        setTimeout(() => {
+          setShow(false);
+          onClose();
+        }, 300);
+      }, 4000);
+      return () => {
+        clearTimeout(appearTimer);
+        clearTimeout(hideTimer);
+      };
+    } else {
+      setShow(false);
+      setAnimationClass("");
+    }
+  }, [message, onClose]);
+
+  if (!show) return null;
+  return (
+    <div className={`${styles.popup} ${animationClass}`}>
+      {message}
+    </div>
+  );
+};
 
 const Game: FC = () => {
 	const { id } = useParams();
 
-	const [currentPlayer, setCurrentPlayer] = React.useState<CurrentMove>();
-	const [board, setBoard] = React.useState<Board>([]);
+	const [currentPlayer, setCurrentPlayer] = useState<CurrentMove>();
+	const [board, setBoard] = useState<Board>([]);
+  const [result, setResult] = useState<Result>("None");
+  const [popup, setPopup] = useState<string>("");
 
-	React.useEffect(() => {
+	useEffect(() => {
 		getStateBoard();
 	}, []);
 
@@ -23,6 +61,14 @@ const Game: FC = () => {
 					console.log(res);
 					setCurrentPlayer(res.currentMove)
 					setBoard(res.board);
+					setResult(res.result)
+          if (res.result === "Draw") {
+            setPopup("Ничья!");
+          } else if (res.result === "WinX") {
+            setPopup("Победа игрока X");
+          } else if (res.result === "WinO") {
+            setPopup("Победа игрока O");
+          }
 				});
 		}
 	}
@@ -61,13 +107,19 @@ const Game: FC = () => {
 	}
 	return (
 		<div className={styles.game}>
+			<PopupMessage message={popup} onClose={() => setPopup("")} />
 			<div className={styles.header}>
 				<Link to="/">
 					<MoveLeft />
 				</Link>
-				<h3>Сейчас ходит: <span>{currentPlayer}</span></h3>
+				{(result === "None") ? (
+					<h3>Сейчас ходит: <span>{currentPlayer}</span></h3>
+				) : (
+					<h3>Игра завершена</h3>
+				)}
 			</div>
 			<div className={styles.fieldWrapper}>
+				
 				<div className={styles.field}>
 					{board.map((row, rowId) => (
 						<div key={rowId} className={styles.row}>
@@ -79,6 +131,7 @@ const Game: FC = () => {
 									style={{
 										width: sizeCell(),
 										height: sizeCell(),
+										fontSize: sizeCell(),
 									}}
 								>
 									{fillCell(cell)}

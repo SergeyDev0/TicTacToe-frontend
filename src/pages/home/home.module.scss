@@ -33,7 +33,7 @@
 	grid-template-columns: repeat(4, 1fr);
 	gap: 1rem;
 
-	div {
+	button {
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -45,9 +45,17 @@
 		font-weight: 500;
 		transition: .2s all;
 
-		&.active {
+		&.active { 
 			background-color: $text-color;
 			color: $secondary-color;
+		}
+
+		&.disabled {
+			pointer-events: none;
+			cursor: not-allowed;
+			background: #eee !important;
+			color: #aaa !important;
+			border-color: #ddd !important;
 		}
 	}
 }
@@ -141,3 +149,4 @@
 		margin: 1rem 0;
 	}
 }
+

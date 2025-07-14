@@ -22,6 +22,12 @@ const Home: FC = () => {
 	const [activeGame, setActiveGame] = React.useState<BoardSize>(3);
 
 	React.useEffect(() => {
+		if (activeGame === 3 && lineToWin > 3) {
+			setLineToWin(3);
+		}
+	}, [activeGame, lineToWin]);
+
+	React.useEffect(() => {
 		getGames()
 			.then((res) => {
 				console.log(res);
@@ -44,6 +50,13 @@ const Home: FC = () => {
 
 		console.log("chance " + chanceReplace, "moves " + movesForReplace, "lines " + lineToWin, "size " + activeGame)
 	}
+
+	const isLineSizeDisabled = (boardSize: BoardSize, lineSize: LineSize) => {
+		if (boardSize === 3 && lineSize !== 3) return true;
+		if (boardSize === 5 && lineSize === 5) return true;
+		return false;
+	};
+
 	return (
 		<div className={styles.home}>
 			<div className={styles.logo}>
@@ -109,12 +122,22 @@ const Home: FC = () => {
 				>
 					{LINE_SIZES.map((size) => (
 						<li key={size}>
-							<div
-								className={lineToWin === size ? `${styles.active}` : ""}
-								onClick={() => setLineToWin(size)}
+							<button
+								disabled={isLineSizeDisabled(activeGame, size)}
+								className={
+									lineToWin === size
+										? styles.active
+										: isLineSizeDisabled(activeGame, size)
+											? styles.disabled
+											: ""
+								}
+								onClick={(event) => {
+									event.preventDefault();
+									setLineToWin(size);
+								}}
 							>
 								{size}
-							</div>
+							</button>
 						</li>
 					))}
 				</ul>
@@ -127,12 +150,15 @@ const Home: FC = () => {
 				>
 					{BOARD_SIZES.map((size) => (
 						<li key={size}>
-							<div
+							<button
 								className={activeGame === size ? `${styles.active}` : ""}
-								onClick={() => setActiveGame(size)}
+								onClick={(event) => {
+									event.preventDefault();
+									setActiveGame(size);
+								}}
 							>
 								{size}x{size}
-							</div>
+							</button>
 						</li>
 					))}
 				</ul>

@@ -57,9 +57,59 @@
 			border-bottom: 1px solid $text-color;
 			border-right: 1px solid $text-color;
 			border-radius: 0;
+			line-height: 1;
 		}
 		> .cell:last-child {
 			border-right: 0;
 		}
 	}
+}
+
+.popup {
+  position: fixed;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%) scale(1);
+  background: rgba(255,255,255,0.98);
+  color: $text-color;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 1.2rem 2.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  z-index: 1000;
+  text-align: center;
+  min-width: 220px;
+  max-width: 90vw;
+  transition: opacity 0.3s, transform 0.3s;
+  opacity: 1;
+  pointer-events: auto;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+    min-width: 120px;
+  }
+}
+
+.popup-enter {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.95);
+}
+
+.popup-enter-active {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.popup-exit {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.popup-exit-active {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.95);
+  transition: opacity 0.3s, transform 0.3s;
 }
